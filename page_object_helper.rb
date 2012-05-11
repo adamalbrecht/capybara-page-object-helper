@@ -59,6 +59,18 @@ module PageObjectHelper
         @browser.find(selector)
       end
     end
+    def text_area(name, options={})
+      selector = discover_selector(options)
+      define_method(name) do
+        @browser.find(selector).value
+      end
+      define_method("#{name}=") do |value|
+        @browser.find(selector).set(value)
+      end
+      define_method("#{name}_text_area") do
+        @browser.find(selector)
+      end
+    end
     def text_field(name, options={})
       selector = discover_selector(options)
       define_method(name) do
@@ -93,10 +105,6 @@ module PageObjectHelper
       end
     end
 
-    def text_area(name, options={})
-
-    end
-
     def check_box(name, options={})
       selector = discover_selector(options)
       define_method("check_#{name}_checkbox") do
@@ -127,6 +135,9 @@ module PageObjectHelper
       selector = discover_selector(options)
       define_method("#{name}_form") do
         @browser.find(selector)
+      end
+      define_method("#{name}_form_selector") do
+        selector
       end
       define_method("#{name}_form_has_errors?") do
         @browser.within(:css, selector) do
